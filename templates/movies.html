@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% extends "base.html" %}
+{% block title %}Movie list of {{ user.name }} | Movi-Web{% endblock %}
+{% block content %}
+<a href="{{ url_for('home') }}">&larr; back</a>
+<h2>Favorites of{{ user.name }}</h2>
+
+{% if movies %}
+  <ul class="list">
+    {% for m in movies %}
+      <li class="movie-row">
+        <div>
+          <strong>{{ m.title }}</strong>{% if m.year %} ({{ m.year }}){% endif %}
+          {% if m.imdb_id %}<small class="muted">ID: {{ m.imdb_id }}</small>{% endif %}
+        </div>
+
+        <form method="post" action="{{ url_for('update_movie', user_id=user.id, movie_id=m.id) }}" class="inline">
+          <input name="new_title" placeholder="Neuer Titel" required>
+          <button type="submit">Update</button>
+        </form>
+
+        <form method="post" action="{{ url_for('delete_movie', user_id=user.id, movie_id=m.id) }}" class="inline">
+          <button type="submit">Delete</button>
+        </form>
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>No movies safed yet.</p>
+{% endif %}
+
+<section class="card">
+  <h3>add movie</h3>
+  <form method="post" action="{{ url_for('add_movie', user_id=user.id) }}">
+    <div class="row">
+      <label for="title">Title</label>
+      <input id="title" name="title" required>
+    </div>
+    <div class="row">
+      <label for="year">Year (optional)</label>
+      <input id="year" name="year">
+    </div>
+    <button type="submit">add</button>
+  </form>
+</section>
+{% endblock %}
+
+</body>
+</html>

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% extends "base.html" %}
+{% block title %}We tryed to get this page, but... as hard as we tried... we could not find it. (404){% endblock %}
+{% block content %}
+  <h1>404 – page not found, nowhere. Not in the garage and not under the bed.</h1>
+  <p>Hopsa, Maybe (just a thought), this page is not coded yet. Drop me a mail, I and do it for you. mailto:henning.tepe@icloud.com <a href="{{ url_for('index') }}">Zur Startseite</a></p>
+{% endblock %}
+</body>
+</html>
