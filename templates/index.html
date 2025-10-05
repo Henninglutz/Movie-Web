@@ -1,41 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-{% extends "base.html" %}
-{% block title %}Users | Movi-Web{% endblock %}
-{% block content %}
-<section>
-  <h2>Users</h2>
+{# templates/index.html #}
 
+{% extends "base.html" %}
+
+{% block title %}Nutzer | Movi-Web{% endblock %}
+
+{% block content %}
+
+<section>
+  <h2>Nutzer</h2>
   {% if users %}
     <ul class="list">
-      {% for user in users %}
+      {% for u in users %}
         <li class="user-entry">
-          <a href="{{ url_for'get_movies', user_id=user.id) }}" class="btn">
-            {{ user.name }}
+          <a href="{{ url_for('get_movies', user_id=u.id) }}" class="btn">
+            {{ u.name }}
           </a>
         </li>
       {% endfor %}
     </ul>
   {% else %}
-    <p>No User</p>
+    <p>No users yet.</p>
   {% endif %}
 </section>
 
 <section class="card">
-  <h3>Adding a new user</h3>
+  <h3>Neuen Nutzer anlegen</h3>
   <form method="post" action="{{ url_for('create_user') }}">
     <div class="row">
       <label for="name">Name</label>
-      <input id="name" name="name" required>
+      <input id="name" name="name" required autocomplete="name">
     </div>
     <button type="submit">Add</button>
   </form>
 </section>
+
 {% endblock %}
-</body>
-</html>

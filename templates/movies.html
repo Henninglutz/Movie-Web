@@ -1,42 +1,44 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
 {% extends "base.html" %}
-{% block title %}Movie list of {{ user.name }} | Movi-Web{% endblock %}
+{% block title %}Movies of {{ user.name }} | Movi-Web{% endblock %}
+
 {% block content %}
-<a href="{{ url_for('home') }}">&larr; back</a>
-<h2>Favorites of{{ user.name }}</h2>
+<a href="{{ url_for('index') }}" class="muted">&larr; Back</a>
+
+<h2>Favorites of {{ user.name }}</h2>
 
 {% if movies %}
   <ul class="list">
     {% for m in movies %}
-      <li class="movie-row">
-        <div>
-          <strong>{{ m.title }}</strong>{% if m.year %} ({{ m.year }}){% endif %}
-          {% if m.imdb_id %}<small class="muted">ID: {{ m.imdb_id }}</small>{% endif %}
-        </div>
+     <li class="movie-row" style="margin-bottom: 1em; display: flex; gap: 1em;">
+  {% if m.poster_url %}
+    <img src="{{ m.poster_url }}" alt="{{ m.title }}" width="100">
+  {% endif %}
 
-        <form method="post" action="{{ url_for('update_movie', user_id=user.id, movie_id=m.id) }}" class="inline">
-          <input name="new_title" placeholder="Neuer Titel" required>
-          <button type="submit">Update</button>
-        </form>
+  <div>
+    <strong>{{ m.title }}</strong>
+    {% if m.year %} ({{ m.year }}){% endif %}
+    {% if m.imdb_id %}<br><small class="muted">IMDb: {{ m.imdb_id }}</small>{% endif %}
 
-        <form method="post" action="{{ url_for('delete_movie', user_id=user.id, movie_id=m.id) }}" class="inline">
-          <button type="submit">Delete</button>
-        </form>
-      </li>
+    <div style="margin-top: 0.5em;">
+      <form method="post" action="{{ url_for('update_movie', user_id=user.id, movie_id=m.id) }}" class="inline">
+        <input name="new_title" placeholder="New title" required>
+        <button type="submit">Update</button>
+      </form>
+
+      <form method="post" action="{{ url_for('delete_movie', user_id=user.id, movie_id=m.id) }}" class="inline" style="display:inline;">
+        <button type="submit">Delete</button>
+      </form>
+    </div>
+  </div>
+</li>
     {% endfor %}
   </ul>
 {% else %}
-  <p>No movies safed yet.</p>
+  <p>No movies saved yet.</p>
 {% endif %}
 
-<section class="card">
-  <h3>add movie</h3>
+<section class="card" style="margin-top: 2em;">
+  <h3>Add movie</h3>
   <form method="post" action="{{ url_for('add_movie', user_id=user.id) }}">
     <div class="row">
       <label for="title">Title</label>
@@ -44,12 +46,9 @@
     </div>
     <div class="row">
       <label for="year">Year (optional)</label>
-      <input id="year" name="year">
+      <input id="year" name="year" placeholder="1999">
     </div>
-    <button type="submit">add</button>
+    <button type="submit">Add</button>
   </form>
 </section>
 {% endblock %}
-
-</body>
-</html>
